@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -284,7 +286,7 @@ public class MimeTypesReaderTest {
     public void testGetExtensionForJavaScript() throws Exception {
         MimeType mt = this.mimeTypes.forName("text/javascript");
         assertEquals(".js", mt.getExtension());
-        assertEquals(List.of(".js", ".mjs"), mt.getExtensions());
+        assertEquals(Arrays.asList(".js", ".mjs"), mt.getExtensions());
     }
 
     
@@ -312,7 +314,7 @@ public class MimeTypesReaderTest {
                 .stream()
                 .map(MediaType::toString)
                 .collect(Collectors.toSet());
-        assertEquals(Set.of("application/javascript", "application/x-javascript"), aliases);
+        assertEquals(new HashSet<>(Arrays.asList("application/javascript", "application/x-javascript")), aliases);
     }
 
     @Test

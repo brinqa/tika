@@ -227,7 +227,7 @@ public class TikaGrpcServerTest {
         List<FetchAndParseReply> errors = Collections.synchronizedList(new ArrayList<>());
         AtomicBoolean finished = new AtomicBoolean(false);
 
-        StreamObserver<FetchAndParseReply> replyStreamObserver = new StreamObserver<>() {
+        StreamObserver<FetchAndParseReply> replyStreamObserver = new StreamObserver<FetchAndParseReply>() {
             @Override
             public void onNext(FetchAndParseReply fetchAndParseReply) {
                 LOG.debug("Fetched {} with metadata {}", fetchAndParseReply.getFetchKey(), fetchAndParseReply.getFieldsMap());

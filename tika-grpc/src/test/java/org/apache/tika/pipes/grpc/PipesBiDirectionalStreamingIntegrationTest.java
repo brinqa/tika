@@ -180,7 +180,7 @@ class PipesBiDirectionalStreamingIntegrationTest {
     void testHttpFetchScenario() throws Exception {
         AtomicInteger numParsed = new AtomicInteger();
         Map<String, Map<String, String>> result = Collections.synchronizedMap(new HashMap<>());
-        StreamObserver<FetchAndParseReply> responseObserver = new StreamObserver<>() {
+        StreamObserver<FetchAndParseReply> responseObserver = new StreamObserver<FetchAndParseReply>() {
             @Override
             public void onNext(FetchAndParseReply fetchAndParseReply) {
                 LOGGER.info("Parsed: {}", fetchAndParseReply.getFetchKey());

@@ -87,7 +87,9 @@ public class AsyncProcessorTest extends TikaTest {
                 .toAbsolutePath()
                 .toString());
 
-        Files.writeString(tikaConfig, xml, StandardCharsets.UTF_8);
+        try (OutputStream configOs = Files.newOutputStream(tikaConfig)) {
+            configOs.write(xml.getBytes(StandardCharsets.UTF_8));
+        }
 
         Path mock = inputDir.resolve("mock.xml");
         try (OutputStream os = Files.newOutputStream(mock)) {
@@ -123,10 +125,10 @@ public class AsyncProcessorTest extends TikaTest {
         }
         processor.close();
 
-        String container = Files.readString(bytesDir.resolve("emit-1/emit-1-0"));
+        String container = new String(Files.readAllBytes(bytesDir.resolve("emit-1/emit-1-0")), StandardCharsets.UTF_8);
         assertContains("\"dc:creator\">Nikolai Lobachevsky", container);
 
-        String xmlEmbedded = Files.readString(bytesDir.resolve("emit-1/emit-1-1"));
+        String xmlEmbedded = new String(Files.readAllBytes(bytesDir.resolve("emit-1/emit-1-1")), StandardCharsets.UTF_8);
         assertContains("name=\"dc:creator\"", xmlEmbedded);
         assertContains(">embeddedAuthor</metadata>", xmlEmbedded);
 

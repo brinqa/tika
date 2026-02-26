@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -38,7 +39,7 @@ public class TestParseContextSerialization {
 
     @Test
     public void testBasic() throws Exception {
-        MetadataFilter metadataFilter = new CompositeMetadataFilter(List.of(new DateNormalizingMetadataFilter()));
+        MetadataFilter metadataFilter = new CompositeMetadataFilter(Collections.singletonList(new DateNormalizingMetadataFilter()));
         ParseContext pc = new ParseContext();
         pc.set(MetadataFilter.class, metadataFilter);
 

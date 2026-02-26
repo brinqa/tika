@@ -207,7 +207,7 @@ public class StandardWriteFilterTest extends TikaTest {
 
     @Test
     public void testAddOrder() throws Exception {
-        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Set.of(), Set.of(), true);
+        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Collections.emptySet(), Collections.emptySet(), true);
         Metadata m = new Metadata();
         m.setMetadataWriteFilter(standardWriteFilter);
         m.add("test", "foo");
@@ -219,7 +219,7 @@ public class StandardWriteFilterTest extends TikaTest {
 
     @Test
     public void testNullValues() throws Exception {
-        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Set.of(), Set.of(), true);
+        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Collections.emptySet(), Collections.emptySet(), true);
         Metadata m = new Metadata();
         m.set("test", "foo");
         m.setMetadataWriteFilter(standardWriteFilter);
@@ -236,7 +236,7 @@ public class StandardWriteFilterTest extends TikaTest {
         assertArrayEquals(new String[]{"foo"}, m.getValues("test"));
 
         //now check when empty not allowed
-        standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Set.of(), Set.of(), false);
+        standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Collections.emptySet(), Collections.emptySet(), false);
         m = new Metadata();
         m.set("test", "foo");
         m.setMetadataWriteFilter(standardWriteFilter);
@@ -256,7 +256,7 @@ public class StandardWriteFilterTest extends TikaTest {
 
     @Test
     public void testNullKeys() {
-        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Set.of(), Set.of(), true);
+        StandardWriteFilter standardWriteFilter = new StandardWriteFilter(100, 1000, 100000, 10, Collections.emptySet(), Collections.emptySet(), true);
         Metadata m = new Metadata();
         m.setMetadataWriteFilter(standardWriteFilter);
         Exception ex = assertThrows(NullPointerException.class, () -> {

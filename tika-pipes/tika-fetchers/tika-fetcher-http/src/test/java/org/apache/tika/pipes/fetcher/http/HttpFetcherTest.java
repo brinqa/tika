@@ -194,16 +194,16 @@ class HttpFetcherTest extends TikaTest {
         HttpFetcherConfig additionalHttpFetcherConfig = new HttpFetcherConfig();
         additionalHttpFetcherConfig.setHttpRequestHeaders(new HttpHeaders());
         HashMap<String, Collection<String>> headersMap = new HashMap<>();
-        headersMap.put("fromFetchRequestHeader1", List.of("fromFetchRequestValue1"));
-        headersMap.put("fromFetchRequestHeader2", List.of("fromFetchRequestValue2", "fromFetchRequestValue3"));
+        headersMap.put("fromFetchRequestHeader1", Collections.singletonList("fromFetchRequestValue1"));
+        headersMap.put("fromFetchRequestHeader2", Arrays.asList("fromFetchRequestValue2", "fromFetchRequestValue3"));
         additionalHttpFetcherConfig.getHttpRequestHeaders().setMap(headersMap);
         fetcherConfigContainer.setJson(new ObjectMapper().writeValueAsString(additionalHttpFetcherConfig));
         parseContext.set(FetcherConfigContainer.class, fetcherConfigContainer);
 
         httpFetcher.getHttpFetcherConfig().setHttpRequestHeaders(new HttpHeaders());
         HashMap<String, Collection<String>> headersMapFromConfig = new HashMap<>();
-        headersMapFromConfig.put("fromFetchConfig1", List.of("fromFetchConfigValue1"));
-        headersMapFromConfig.put("fromFetchConfig2", List.of("fromFetchConfigValue2", "fromFetchConfigValue3"));
+        headersMapFromConfig.put("fromFetchConfig1", Collections.singletonList("fromFetchConfigValue1"));
+        headersMapFromConfig.put("fromFetchConfig2", Arrays.asList("fromFetchConfigValue2", "fromFetchConfigValue3"));
         httpFetcher.getHttpFetcherConfig().getHttpRequestHeaders().setMap(headersMapFromConfig);
 
         httpFetcher.fetch("http://localhost", metadata, parseContext);
