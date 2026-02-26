@@ -331,7 +331,7 @@ public class PDMetadataExtractor {
     }
 
     private static void setNotNull(String value, Metadata metadata, Property ... properties) {
-        if (value == null || value.isBlank()) {
+        if (value == null || value.trim().isEmpty()) {
             return;
         }
         String decoded = decode(value);
@@ -397,7 +397,7 @@ public class PDMetadataExtractor {
         for (Property property : properties) {
             for (String lang : schema.getLanguagePropertyLanguages(dcName)) {
                 String value = schema.getLanguageProperty(dcName, lang);
-                if (value != null && ! value.isBlank()) {
+                if (value != null && ! value.trim().isEmpty()) {
                     addMetadata(metadata, property, value);
                 }
             }
@@ -460,7 +460,7 @@ public class PDMetadataExtractor {
      * @param value
      */
     static void addMetadata(Metadata metadata, Property property, String value) {
-        if (value == null || value.isBlank()) {
+        if (value == null || value.trim().isEmpty()) {
             return;
         }
         String decoded = decode(value);

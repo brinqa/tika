@@ -19,6 +19,7 @@ package org.apache.tika.parser.geopkg;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +82,7 @@ public class GeoPkgParser extends SQLite3Parser {
         SUPPORTED_TYPES = Collections.singleton(MEDIA_TYPE);
     }
 
-    private static final Set<String> DEFAULT_IGNORE_BLOB_COLUMNS = Set.of("geom", "data");
+    private static final Set<String> DEFAULT_IGNORE_BLOB_COLUMNS = new HashSet<String>(Arrays.asList("geom", "data"));
     private Set<String> ignoreBlobColumns = new HashSet<>(DEFAULT_IGNORE_BLOB_COLUMNS);
     /**
      * Checks to see if class is available for org.sqlite.JDBC.

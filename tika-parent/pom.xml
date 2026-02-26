@@ -281,9 +281,9 @@
   </contributors>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>8</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
     <project.build.outputTimestamp>1757600543</project.build.outputTimestamp>
@@ -1161,7 +1161,7 @@
         <configuration>
           <showDeprecation>true</showDeprecation>
           <compilerArgument>-Xlint:deprecation</compilerArgument>
-          <release>11</release>
+          <release>8</release>
         </configuration>
       </plugin>
       <!--

@@ -55,7 +55,7 @@ public class TikaExcelDataFormatter extends DataFormatter {
     }
 
     public void setDateFormatOverride(String dateOverrideFormat) {
-        if (dateOverrideFormat != null && !dateOverrideFormat.isBlank()) {
+        if (dateOverrideFormat != null && !dateOverrideFormat.trim().isEmpty()) {
             this.dateOverrideFormatString = dateOverrideFormat;
         }
     }

@@ -31,6 +31,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -542,7 +543,7 @@ public class HttpFetcher extends AbstractFetcher implements Initializable, Range
             if (keyValue.length == 2) {
                 String key = keyValue[0].trim();
                 String value = keyValue[1].trim();
-                headersMap.put(key, List.of(value));
+                headersMap.put(key, Collections.singletonList(value));
             }
         }
         return headersMap;

@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class LibPstParser implements Parser, Initializable {
 
     public static final MediaType MS_OUTLOOK_PST_MIMETYPE = MediaType.application("vnd.ms-outlook-pst");
 
-    private static final Set<MediaType> SUPPORTED = Set.of(MS_OUTLOOK_PST_MIMETYPE);
+    private static final Set<MediaType> SUPPORTED = Collections.singleton(MS_OUTLOOK_PST_MIMETYPE);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibPstParser.class);
 

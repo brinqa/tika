@@ -719,12 +719,12 @@ public class TikaConfig {
         T loadOne(Element element, MimeTypes mimeTypes, ServiceLoader loader)
                 throws TikaException, IOException {
             String name = element.getAttribute("class");
-            if (name.isBlank()) {
+            if (name.trim().isEmpty()) {
                 throw new TikaConfigException("class attribute must not be empty: " + element);
             }
             String initProbHandler = element.getAttribute("initializableProblemHandler");
             InitializableProblemHandler initializableProblemHandler;
-            if (initProbHandler.isBlank()) {
+            if (initProbHandler.trim().isEmpty()) {
                 initializableProblemHandler = loader.getInitializableProblemHandler();
             } else {
                 initializableProblemHandler = getInitializableProblemHandler(initProbHandler);

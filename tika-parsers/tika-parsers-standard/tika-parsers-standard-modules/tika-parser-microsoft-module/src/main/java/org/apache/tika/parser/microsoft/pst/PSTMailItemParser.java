@@ -21,6 +21,7 @@ import static java.lang.String.valueOf;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Set;
 
 import com.pff.PSTAttachment;
@@ -56,7 +57,7 @@ public class PSTMailItemParser implements Parser {
     //this is a synthetic file type to represent a notional "pst item"
     public static final MediaType PST_MAIL_ITEM = MediaType.application("x-tika-pst-mail-item");
     public static final String PST_MAIL_ITEM_STRING = PST_MAIL_ITEM.toString();
-    public static final Set<MediaType> SUPPORTED_ITEMS = Set.of(PST_MAIL_ITEM);
+    public static final Set<MediaType> SUPPORTED_ITEMS = Collections.singleton(PST_MAIL_ITEM);
 
     @Override
     public Set<MediaType> getSupportedTypes(ParseContext context) {

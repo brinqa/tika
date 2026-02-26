@@ -750,7 +750,7 @@ class AbstractPDF2XHTML extends PDFTextStripper {
                     PDActionURI uri = getActionURI(annotation);
                     if (uri != null) {
                         String link = uri.getURI();
-                        if (link != null && !link.isBlank()) {
+                        if (link != null && !link.trim().isEmpty()) {
                             xhtml.startElement("div", "class", "annotation");
                             xhtml.startElement("a", "href", link);
                             xhtml.characters(link);

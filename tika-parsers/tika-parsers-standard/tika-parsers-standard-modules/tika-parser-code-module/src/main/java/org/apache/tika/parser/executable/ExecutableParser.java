@@ -434,7 +434,7 @@ public class ExecutableParser implements Parser, MachineMetadata {
      */
     public void parseMachO(XHTMLContentHandler xhtml, Metadata metadata, InputStream stream,
                            byte[] first4) throws TikaException, IOException {
-        var isLE = first4[3] == (byte) 0xFE;
+        boolean isLE = first4[3] == (byte) 0xFE;
         if (isLE) {
             metadata.set(ENDIAN, Endian.LITTLE.getName());
         } else {
@@ -442,7 +442,7 @@ public class ExecutableParser implements Parser, MachineMetadata {
         }
 
         // Bytes 5-8 are the CPU type and architecture bits
-        var cpuType = isLE
+        int cpuType = isLE
                 ? EndianUtils.readIntLE(stream)
                 : EndianUtils.readIntBE(stream);
         if ((cpuType >> 24) == 1) {
@@ -480,12 +480,12 @@ public class ExecutableParser implements Parser, MachineMetadata {
         }
 
         // Bytes 9-12 are the CPU subtype
-        var cpuSubtype = isLE
+        int cpuSubtype = isLE
                 ? EndianUtils.readIntLE(stream)
                 : EndianUtils.readIntBE(stream);
 
         // Bytes 13-16 are the file type
-        var fileType = isLE
+        int fileType = isLE
                 ? EndianUtils.readIntLE(stream)
                 : EndianUtils.readIntBE(stream);
         switch (fileType) {

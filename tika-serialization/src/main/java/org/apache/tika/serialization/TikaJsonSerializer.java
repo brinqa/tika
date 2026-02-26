@@ -21,7 +21,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,8 +45,10 @@ import org.slf4j.LoggerFactory;
 public class TikaJsonSerializer {
 
     public static String INSTANTIATED_CLASS_KEY = "_class";
-    static Set<Class> PRIMITIVES = Set.of(int.class, double.class, float.class, long.class, short.class, boolean.class, String.class, byte.class, char.class);
-    static Set<Class> BOXED = Set.of(Integer.class, Double.class, Float.class, Long.class, Short.class, Boolean.class, Byte.class, Character.class);
+    static Set<Class> PRIMITIVES = new HashSet<Class>(Arrays.asList(int.class, double.class,
+            float.class, long.class, short.class, boolean.class, String.class, byte.class,
+            char.class));
+    static Set<Class> BOXED = new HashSet<Class>(Arrays.asList(Integer.class, Double.class, Float.class, Long.class, Short.class, Boolean.class, Byte.class, Character.class));
     static String SET = "set";
     private static Logger LOG = LoggerFactory.getLogger(TikaJsonSerializer.class);
     private static String GET = "get";

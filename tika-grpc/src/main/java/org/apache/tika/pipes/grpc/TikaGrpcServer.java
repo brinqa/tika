@@ -19,7 +19,8 @@ package org.apache.tika.pipes.grpc;
 import static io.grpc.health.v1.HealthCheckResponse.ServingStatus;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
@@ -91,7 +92,7 @@ public class TikaGrpcServer {
         if (tikaConfigXml == null) {
             // Create a default tika config
             tikaConfigXml = File.createTempFile("tika-config", ".xml");
-            try (FileWriter fw = new FileWriter(tikaConfigXml, StandardCharsets.UTF_8)) {
+            try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(tikaConfigXml), StandardCharsets.UTF_8)) {
                 TikaConfigSerializer.serialize(new TikaConfig(), TikaConfigSerializer.Mode.STATIC_FULL, fw, StandardCharsets.UTF_8);
             }
         }

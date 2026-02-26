@@ -199,7 +199,7 @@ public class TesseractOCRConfig implements Serializable {
      * @param pageSeparator
      */
     public void setPageSeparator(String pageSeparator) {
-        if (pageSeparator.isBlank()) {
+        if (pageSeparator.trim().isEmpty()) {
             return;
         }
         Matcher m = ALLOWABLE_PAGE_SEPARATORS_PATTERN.matcher(pageSeparator);

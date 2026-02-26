@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +52,13 @@ public class SQLite3DBParser extends AbstractDBParser {
 
     protected static final String SQLITE_CLASS_NAME = "org.sqlite.JDBC";
 
-    protected static final Map<Property, String> METADATA_KEYS = Map.of(
-            SQLite3Parser.SQLITE_APPLICATION_ID, "select application_id from pragma_application_id",
-            SQLite3Parser.SQLITE_USER_VERSION, "select user_version from pragma_user_version"
-    );
+    protected static final Map<Property, String> METADATA_KEYS;
+    static {
+        Map<Property, String> metadataKeys = new LinkedHashMap<Property, String>();
+        metadataKeys.put(SQLite3Parser.SQLITE_APPLICATION_ID, "select application_id from pragma_application_id");
+        metadataKeys.put(SQLite3Parser.SQLITE_USER_VERSION, "select user_version from pragma_user_version");
+        METADATA_KEYS = metadataKeys;
+    }
 
     //If the InputStream wasn't a TikaInputStream, copy to this tmp file
     Path tmpFile = null;

@@ -91,9 +91,9 @@ public class UniversalExecutableParser implements Parser {
                            Metadata metadata, InputStream stream,
                            byte[] first4)
             throws IOException, SAXException, TikaException {
-        var currentOffset = (long) first4.length;
-        var isLE = first4[3] == (byte) 0xCA;
-        var is64 = first4[isLE ? 0 : 3] == (byte) 0xBF;
+        long currentOffset = (long) first4.length;
+        boolean isLE = first4[3] == (byte) 0xCA;
+        boolean is64 = first4[isLE ? 0 : 3] == (byte) 0xBF;
         int archStructSize = 4 /* cputype */ + 4 /* cpusubtype */ + (is64
                 ? 8 /* offset */ + 8 /* size */ + 4 /* align */ + 4 /* reserved */
                 : 4 /* offset */ + 4 /* size */ + 4 /* align */);
@@ -110,8 +110,8 @@ public class UniversalExecutableParser implements Parser {
 
         long archsSize = (long) archsCount * archStructSize;
 
-        var unsortedOffsets = false;
-        var offsetAndSizePerArch = new Pair[archsCount];
+        boolean unsortedOffsets = false;
+        Pair[] offsetAndSizePerArch = new Pair[archsCount];
         for (int archIndex = 0; archIndex < archsCount; archIndex++) {
             IOUtils.skipFully(stream, 8);
 
@@ -155,8 +155,8 @@ public class UniversalExecutableParser implements Parser {
             IOUtils.readFully(stream, perArchMachO);
             currentOffset += perArchMachO.length;
 
-            var perArchMetadata = new Metadata();
-            var tikaInputStream = TikaInputStream.get(perArchMachO, perArchMetadata);
+            Metadata perArchMetadata = new Metadata();
+            TikaInputStream tikaInputStream = TikaInputStream.get(perArchMachO, perArchMetadata);
             if (extractor.shouldParseEmbedded(perArchMetadata)) {
                 extractor.parseEmbedded(tikaInputStream, xhtml, perArchMetadata, true);
             }

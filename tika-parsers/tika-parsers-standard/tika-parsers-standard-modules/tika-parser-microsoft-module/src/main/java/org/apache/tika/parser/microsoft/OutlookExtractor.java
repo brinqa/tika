@@ -145,7 +145,7 @@ public class OutlookExtractor extends AbstractPOIFSExtractor {
                         OutlookExtractor.class.getResourceAsStream(fName), UTF_8))) {
             String line = r.readLine();
             while (line != null) {
-                if (line.isBlank() || line.startsWith("#")) {
+                if (line.trim().isEmpty() || line.startsWith("#")) {
                     line = r.readLine();
                     continue;
                 }
@@ -211,7 +211,7 @@ public class OutlookExtractor extends AbstractPOIFSExtractor {
     }
 
     public static String getNormalizedMessageClass(String messageClass) {
-        if (messageClass == null || messageClass.isBlank()) {
+        if (messageClass == null || messageClass.trim().isEmpty()) {
             return "UNSPECIFIED";
         }
         String lc = messageClass.toLowerCase(Locale.ROOT);

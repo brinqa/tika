@@ -17,6 +17,7 @@
 
 package org.apache.tika.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -44,7 +45,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.sax.SAXTransformerFactory;
 
-import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -129,7 +129,7 @@ public class XMLReaderUtils implements Serializable {
     //BE CAREFUL with the return type. Some parsers will silently ignore an unexpected return type: CVE-2025-54988
     private static final XMLResolver IGNORING_STAX_ENTITY_RESOLVER =
             (publicID, systemID, baseURI, namespace) ->
-                    UnsynchronizedByteArrayInputStream.nullInputStream();
+                    new ByteArrayInputStream(new byte[0]);
     /**
      * Parser pool size
      */

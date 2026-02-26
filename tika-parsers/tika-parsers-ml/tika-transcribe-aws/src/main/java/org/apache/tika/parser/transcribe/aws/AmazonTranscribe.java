@@ -282,9 +282,8 @@ public class AmazonTranscribe implements Parser, Initializable {
         String text = "";
         if (transcriptionJob != null && !TranscriptionJobStatus.FAILED
                 .equals(transcriptionJob.transcriptionJobStatus())) {
-            ResponseInputStream<GetObjectResponse> s3Object = amazonS3.getObject(GetObjectRequest.builder().bucket(bucketName).key(fileNameS3 + ".json")
-                    .build());
-            try (s3Object) {
+            try (ResponseInputStream<GetObjectResponse> s3Object = amazonS3.getObject(GetObjectRequest.builder().bucket(bucketName).key(fileNameS3 + ".json")
+                    .build())) {
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode root = mapper.readTree(s3Object);
                 text = root

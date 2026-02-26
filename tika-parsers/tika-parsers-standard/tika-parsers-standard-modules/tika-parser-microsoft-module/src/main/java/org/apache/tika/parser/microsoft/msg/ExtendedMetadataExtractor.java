@@ -207,7 +207,7 @@ public class ExtendedMetadataExtractor {
                 new InputStreamReader(ExtendedMetadataExtractor.class.getResourceAsStream("/org/apache/tika/parser/microsoft/msg/props_table.txt"), UTF_8))) {
             String line = r.readLine();
             while (line != null) {
-                if (line.isBlank() || line.startsWith("#")) {
+                if (line.trim().isEmpty() || line.startsWith("#")) {
                     line = r.readLine();
                     continue;
                 }
@@ -282,7 +282,7 @@ public class ExtendedMetadataExtractor {
         if (arr.length == 1) {
             Types.MAPIType type = parseDataType(arr[0]);
             if (type != null) {
-                return List.of(type);
+                return Collections.singletonList(type);
             }
             return Collections.EMPTY_LIST;
         }

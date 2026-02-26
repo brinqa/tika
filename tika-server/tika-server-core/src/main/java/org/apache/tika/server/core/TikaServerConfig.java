@@ -284,7 +284,7 @@ private long forkedProcessShutdownMillis = DEFAULT_FORKED_PROCESS_SHUTDOWN_MILLI
     }
 
     private static String interpolate(String arg) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         Matcher m = SYS_PROPS.matcher(arg);
         while (m.find()) {
             String prop = System.getProperty(m.group(1));

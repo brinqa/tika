@@ -41,7 +41,7 @@ public class StringUtils {
     }
 
     public static boolean isBlank(final String s) {
-        return s == null || s.isBlank();
+        return s == null || s.trim().isEmpty();
     }
 
     /**

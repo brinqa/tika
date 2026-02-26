@@ -187,7 +187,7 @@ public class TikaJsonDeserializer {
         }
 
         Optional object = deserializeObject(node);
-        if (object.isEmpty()) {
+        if (!object.isPresent()) {
             //log, throw exception?!
             return;
         }

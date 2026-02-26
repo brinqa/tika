@@ -19,6 +19,7 @@ package org.apache.tika.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 
@@ -125,14 +126,26 @@ public class BoundedInputStream extends InputStream {
         return pos >= max;
     }
 
-    @Override
     public byte[] readNBytes(int len) throws IOException {
-        return in.readNBytes(len);
+        if (len < 0) {
+            throw new IllegalArgumentException("len < 0");
+        }
+        byte[] buf = new byte[len];
+        int nread = 0;
+        int n;
+        while (nread < len && (n = read(buf, nread, len - nread)) != EOF) {
+            nread += n;
+        }
+        return nread == len ? buf : Arrays.copyOf(buf, nread);
     }
 
-    @Override
     public int readNBytes(byte[] b, int off, int len) throws IOException {
-        return in.readNBytes(b, off, len);
+        int nread = 0;
+        int n;
+        while (nread < len && (n = read(b, off + nread, len - nread)) != EOF) {
+            nread += n;
+        }
+        return nread;
     }
 
     @Override
@@ -145,7 +158,6 @@ public class BoundedInputStream extends InputStream {
         return in.markSupported();
     }
 
-    @Override
     public long transferTo(OutputStream out) throws IOException {
         return IOUtils.copy(this, out);
     }

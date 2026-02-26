@@ -17,8 +17,9 @@
 package org.apache.tika.pipes.grpc;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -136,11 +137,11 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
         for (int i = 0; i < fetchersElement.getChildNodes().getLength(); ++i) {
             fetchersElement.removeChild(fetchersElement.getChildNodes().item(i));
         }
-        for (var fetcherEntry : expiringFetcherStore.getFetchers().entrySet()) {
+        for (Map.Entry<String, AbstractFetcher> fetcherEntry : expiringFetcherStore.getFetchers().entrySet()) {
             AbstractFetcher fetcherObject = fetcherEntry.getValue();
             Map<String, Object> fetcherConfigParams = OBJECT_MAPPER.convertValue(
                     expiringFetcherStore.getFetcherConfigs().get(fetcherEntry.getKey()),
-                    new TypeReference<>() {
+                    new TypeReference<Map<String, Object>>() {
                     });
             Element fetcher = tikaConfigDoc.createElement("fetcher");
             fetcher.setAttribute("class", fetcherEntry.getValue().getClass().getName());
@@ -151,7 +152,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
             fetchersElement.appendChild(fetcher);
         }
         DOMSource source = new DOMSource(tikaConfigDoc);
-        FileWriter writer = new FileWriter(tikaConfigPath, StandardCharsets.UTF_8);
+        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(tikaConfigPath), StandardCharsets.UTF_8);
         StreamResult result = new StreamResult(writer);
 
         TransformerFactory transformerFactory = XMLReaderUtils.getTransformerFactory();
@@ -161,7 +162,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
 
     private void populateFetcherConfigs(Map<String, Object> fetcherConfigParams,
                                         Document tikaConfigDoc, Element fetcher) {
-        for (var configParam : fetcherConfigParams.entrySet()) {
+        for (Map.Entry<String, Object> configParam : fetcherConfigParams.entrySet()) {
             Element configElm = tikaConfigDoc.createElement(configParam.getKey());
             fetcher.appendChild(configElm);
             if (configParam.getValue() instanceof List) {
@@ -187,7 +188,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
     @Override
     public StreamObserver<FetchAndParseRequest> fetchAndParseBiDirectionalStreaming(
             StreamObserver<FetchAndParseReply> responseObserver) {
-        return new StreamObserver<>() {
+        return new StreamObserver<FetchAndParseRequest>() {
             @Override
             public void onNext(FetchAndParseRequest fetchAndParseRequest) {
                 fetchAndParseImpl(fetchAndParseRequest, responseObserver);
@@ -269,7 +270,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
         SaveFetcherReply reply =
                 SaveFetcherReply.newBuilder().setFetcherId(request.getFetcherId()).build();
         try {
-            Map<String, Object> fetcherConfigMap = OBJECT_MAPPER.readValue(request.getFetcherConfigJson(), new TypeReference<>() {});
+            Map<String, Object> fetcherConfigMap = OBJECT_MAPPER.readValue(request.getFetcherConfigJson(), new TypeReference<Map<String, Object>>() {});
             Map<String, Param> tikaParamsMap = createTikaParamMap(fetcherConfigMap);
             saveFetcher(request.getFetcherId(), request.getFetcherClass(), fetcherConfigMap, tikaParamsMap);
             updateTikaConfig();
@@ -288,7 +289,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
             Class<? extends AbstractFetcher> fetcherClass =
                     (Class<? extends AbstractFetcher>) Class.forName(fetcherClassName);
             String configClassName =
-                    fetcherClass.getPackageName() + ".config." + fetcherClass.getSimpleName() +
+                    fetcherClass.getPackage().getName() + ".config." + fetcherClass.getSimpleName() +
                             "Config";
             Class<? extends AbstractConfig> configClass =
                     (Class<? extends AbstractConfig>) Class.forName(configClassName);
@@ -342,7 +343,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
         }
         getFetcherReply.setFetcherId(request.getFetcherId());
         getFetcherReply.setFetcherClass(abstractFetcher.getClass().getName());
-        Map<String, Object> paramMap = OBJECT_MAPPER.convertValue(abstractConfig, new TypeReference<>() {});
+        Map<String, Object> paramMap = OBJECT_MAPPER.convertValue(abstractConfig, new TypeReference<Map<String, Object>>() {});
         paramMap.forEach(
                 (k, v) -> getFetcherReply.putParams(Objects.toString(k), Objects.toString(v)));
         responseObserver.onNext(getFetcherReply.build());
@@ -378,7 +379,7 @@ class TikaGrpcServerImpl extends TikaGrpc.TikaImplBase {
     private static void loadParamsIntoReply(AbstractConfig abstractConfig,
                                             GetFetcherReply.Builder replyBuilder) {
         Map<String, Object> paramMap =
-                OBJECT_MAPPER.convertValue(abstractConfig, new TypeReference<>() {
+                OBJECT_MAPPER.convertValue(abstractConfig, new TypeReference<Map<String, Object>>() {
                 });
         if (paramMap != null) {
             paramMap.forEach(
